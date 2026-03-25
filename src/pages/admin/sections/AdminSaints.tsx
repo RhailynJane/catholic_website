@@ -3,6 +3,7 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import type { Id } from "../../../../convex/_generated/dataModel";
 import Modal from "../../../components/ui/Modal";
+import { stripHtmlTags } from "../../../lib/utils";
 
 type SaintForm = {
   name: string;
@@ -43,7 +44,7 @@ export default function AdminSaints({ token }: { token: string }) {
   const openEdit = (s: NonNullable<typeof saints>[0]) => {
     setForm({
       name: s.name, dayOfYear: s.dayOfYear, month: s.month, day: s.day,
-      feastDate: s.feastDate, shortBio: s.shortBio, fullBio: s.fullBio,
+      feastDate: s.feastDate, shortBio: stripHtmlTags(s.shortBio), fullBio: stripHtmlTags(s.fullBio),
       bornYear: s.bornYear || "", diedYear: s.diedYear || "",
       patronOf: s.patronOf || "", imageUrl: s.imageUrl || "",
       tags: s.tags.join(", "),
@@ -159,9 +160,9 @@ export default function AdminSaints({ token }: { token: string }) {
             </div>
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">Full Biography (HTML)</label>
-            <textarea value={form.fullBio} onChange={set("fullBio")} rows={8} placeholder="Full bio in HTML..."
-              className="w-full border border-gray-300 rounded px-3 py-2 text-sm font-mono focus:outline-none focus:border-catholic-burgundy" />
+            <label className="block text-xs font-medium text-gray-700 mb-1">Full Biography</label>
+            <textarea value={form.fullBio} onChange={set("fullBio")} rows={8} placeholder="Full biography of the saint..."
+              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-catholic-burgundy" />
           </div>
           <button onClick={handleSave} className="w-full btn-primary">Save Saint</button>
         </div>

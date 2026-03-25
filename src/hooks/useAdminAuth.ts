@@ -4,7 +4,8 @@ import { api } from "../../convex/_generated/api";
 import { getAdminToken, setAdminToken, clearAdminToken } from "../lib/adminAuth";
 
 export function useAdminAuth() {
-  const [token, setToken] = useState<string | null>(getAdminToken);
+  // Start with no token - require password on each page load
+  const [token, setToken] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
 
   const verifyResult = useQuery(

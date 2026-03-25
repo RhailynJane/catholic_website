@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import PageHeader from "../../components/ui/PageHeader";
@@ -38,12 +38,20 @@ export default function EvangeliumPage() {
   const topics = useMemo(() => {
     if (!data?.content) return [];
     return extractTopics(data.content);
-  }, [data?.content]);
+  }, [data]);
 
   const processedContent = useMemo(() => {
     if (!data?.content) return "";
     return injectAnchors(data.content);
-  }, [data?.content]);
+  }, [data]);
+
+  // Auto-scroll to content when tab changes
+  useEffect(() => {
+    const contentArea = document.querySelector(".evangelium-content");
+    if (contentArea) {
+      contentArea.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [activeTab]);
 
   function scrollToTopic(topic: string) {
     setActiveTopic(topic);
@@ -95,7 +103,7 @@ export default function EvangeliumPage() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 py-12">
+      <div className="max-w-6xl mx-auto px-6 py-12 evangelium-content">
         {data === undefined ? (
           <Spinner />
         ) : (

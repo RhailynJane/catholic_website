@@ -3,6 +3,7 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import type { Id } from "../../../../convex/_generated/dataModel";
 import Modal from "../../../components/ui/Modal";
+import { stripHtmlTags } from "../../../lib/utils";
 import { slugify } from "../../../lib/utils";
 
 type PrayerForm = {
@@ -101,9 +102,9 @@ export default function AdminPrayers({ token }: { token: string }) {
             </div>
           ))}
           <div>
-            <label className="block text-xs font-medium mb-1">Prayer Text (HTML)</label>
-            <textarea value={form.text} onChange={set("text")} rows={8} placeholder="Prayer text..."
-              className="w-full border rounded px-3 py-2 text-sm font-mono focus:outline-none" />
+            <label className="block text-xs font-medium mb-1">Prayer Text</label>
+            <textarea value={form.text} onChange={set("text")} rows={8} placeholder="Write the prayer here..."
+              className="w-full border rounded px-3 py-2 text-sm focus:outline-none" />
           </div>
           <div>
             <label className="block text-xs font-medium mb-1">Latin Text (optional)</label>

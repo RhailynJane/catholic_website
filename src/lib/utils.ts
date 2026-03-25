@@ -22,3 +22,14 @@ export function formatReference(book: string, chapter: number, verse: number, ve
 export function cn(...classes: (string | boolean | undefined | null)[]): string {
   return classes.filter(Boolean).join(" ");
 }
+
+export function stripHtmlTags(html: string): string {
+  // Remove HTML tags and decode common entities
+  return html
+    .replace(/<[^>]*>/g, "")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&")
+    .trim();
+}

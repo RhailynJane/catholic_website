@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
+import { stripHtmlTags } from "../../../lib/utils";
 
 type Section = "creed" | "sacraments" | "morals" | "prayer";
 
@@ -29,7 +30,7 @@ export default function AdminEvangelium({ token }: { token: string }) {
   const handleLoad = () => {
     if (data) {
       setTitle(data.title);
-      setContent(data.content);
+      setContent(stripHtmlTags(data.content));
     }
   };
 
@@ -94,15 +95,14 @@ export default function AdminEvangelium({ token }: { token: string }) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Content (HTML)</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Content</label>
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
             rows={20}
-            placeholder="Enter HTML content..."
-            className="w-full border border-gray-300 rounded px-3 py-2 font-mono text-sm focus:outline-none focus:border-catholic-burgundy"
+            placeholder="Enter the gospel reading here..."
+            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-catholic-burgundy"
           />
-          <p className="text-xs text-gray-400 mt-1">HTML tags supported: p, h1-h4, ul, ol, li, strong, em, blockquote, a</p>
         </div>
 
         <div className="flex items-center gap-3">

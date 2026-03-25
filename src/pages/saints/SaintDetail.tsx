@@ -58,6 +58,20 @@ export default function SaintDetail() {
 
         <div className="mt-5 h-px w-12 bg-catholic-gold" />
 
+        {/* Image */}
+        {saint.imageUrl && (
+          <div className="mt-8 mb-8">
+            <img 
+              src={saint.imageUrl} 
+              alt={saint.name}
+              className="max-w-md w-full h-auto rounded-lg shadow-lg"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = "none";
+              }}
+            />
+          </div>
+        )}
+
         {/* Details grid */}
         <dl className="mt-6 space-y-2">
           {saint.patronOf && (

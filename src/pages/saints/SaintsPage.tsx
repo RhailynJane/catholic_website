@@ -83,30 +83,46 @@ export default function SaintsPage() {
               <Link
                 key={saint._id}
                 to={`/saints/${saint._id}`}
-                className={`bg-white p-5 hover:bg-catholic-cream transition-colors group ${
+                className={`bg-white hover:bg-catholic-cream transition-colors group ${
                   saint.dayOfYear === todayDOY ? "ring-1 ring-inset ring-catholic-gold" : ""
                 }`}
               >
-                {saint.dayOfYear === todayDOY && (
-                  <p className="text-[9px] tracking-[0.4em] uppercase text-catholic-gold font-sans mb-2">Today</p>
-                )}
-                <p className="text-[9px] tracking-[0.3em] uppercase text-stone-400 font-sans">{saint.feastDate}</p>
-                <h3 className="font-serif text-lg text-stone-900 font-normal group-hover:text-stone-600 mt-1 leading-snug">
-                  {saint.name}
-                </h3>
-                <p className="text-xs font-sans text-stone-500 mt-2 line-clamp-3 leading-relaxed">{saint.shortBio}</p>
-                {saint.patronOf && (
-                  <p className="text-[10px] font-sans text-stone-400 mt-2">Patron of: {saint.patronOf}</p>
-                )}
-                {saint.tags.length > 0 && (
-                  <div className="mt-3 flex flex-wrap gap-1">
-                    {saint.tags.slice(0, 3).map((tag) => (
-                      <span key={tag} className="text-[9px] bg-stone-100 text-stone-500 px-1.5 py-0.5 uppercase tracking-wide font-sans">
-                        {tag}
-                      </span>
-                    ))}
+                {/* Image */}
+                {saint.imageUrl && (
+                  <div className="overflow-hidden bg-stone-100 h-48">
+                    <img 
+                      src={saint.imageUrl} 
+                      alt={saint.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).parentElement!.style.display = "none";
+                      }}
+                    />
                   </div>
                 )}
+
+                <div className="p-5">
+                  {saint.dayOfYear === todayDOY && (
+                    <p className="text-[9px] tracking-[0.4em] uppercase text-catholic-gold font-sans mb-2">Today</p>
+                  )}
+                  <p className="text-[9px] tracking-[0.3em] uppercase text-stone-400 font-sans">{saint.feastDate}</p>
+                  <h3 className="font-serif text-lg text-stone-900 font-normal group-hover:text-stone-600 mt-1 leading-snug">
+                    {saint.name}
+                  </h3>
+                  <p className="text-xs font-sans text-stone-500 mt-2 line-clamp-3 leading-relaxed">{saint.shortBio}</p>
+                  {saint.patronOf && (
+                    <p className="text-[10px] font-sans text-stone-400 mt-2">Patron of: {saint.patronOf}</p>
+                  )}
+                  {saint.tags.length > 0 && (
+                    <div className="mt-3 flex flex-wrap gap-1">
+                      {saint.tags.slice(0, 3).map((tag) => (
+                        <span key={tag} className="text-[9px] bg-stone-100 text-stone-500 px-1.5 py-0.5 uppercase tracking-wide font-sans">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </Link>
             ))}
           </div>

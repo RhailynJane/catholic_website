@@ -9,7 +9,7 @@ import AdminArticles from "./sections/AdminArticles";
 import AdminFormulas from "./sections/AdminFormulas";
 import AdminReferences from "./sections/AdminReferences";
 import AdminEvangelium from "./sections/AdminEvangelium";
-import { LogOut, Lock } from "lucide-react";
+import { LogOut, Lock, Key } from "lucide-react";
 
 type Section = "saints" | "verses" | "prayers" | "articles" | "formulas" | "references" | "evangelium";
 
@@ -40,12 +40,13 @@ function LoginScreen({ onLogin }: { onLogin: (pw: string) => Promise<boolean> })
   };
 
   const handleSeed = async () => {
-    if (!password) { setError("Enter a password to set as admin password."); return; }
     try {
-      await seedMutation({ password });
-      alert("Admin password set! You can now log in.");
-    } catch (e: any) {
-      setError(e.message);
+      await seedMutation({});
+      alert("Admin initialized successfully! You can now log in with your password.");
+      setPassword("");
+    } catch (e: unknown) {
+      const error = e instanceof Error ? e.message : "Failed to initialize admin";
+      setError(error);
     }
   };
 
@@ -86,13 +87,13 @@ function LoginScreen({ onLogin }: { onLogin: (pw: string) => Promise<boolean> })
         {isConfigured === false && (
           <div className="mt-6 pt-6 border-t border-gray-200">
             <p className="text-xs text-gray-500 mb-3">
-              No admin configured yet. Enter a password above and click below to set it:
+              No admin configured yet. Click below to initialize with default credentials:
             </p>
             <button
               onClick={handleSeed}
               className="w-full btn-outline py-2 text-sm"
             >
-              Set as Admin Password (First Time Only)
+              Initialize Admin (First Time Only)
             </button>
           </div>
         )}
@@ -101,9 +102,135 @@ function LoginScreen({ onLogin }: { onLogin: (pw: string) => Promise<boolean> })
   );
 }
 
+function ChangePasswordModal({ token, onClose, onSuccess }: { token: string; onClose: () => void; onSuccess: () => void }) {
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const changePasswordMutation = useMutation(api.admin.changePassword);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    if (!currentPassword) {
+      setError("Current password is required");
+      return;
+    }
+
+    if (!newPassword) {
+      setError("New password is required");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    if (newPassword.length < 8) {
+      setError("New password must be at least 8 characters");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const result = await changePasswordMutation({
+        token,
+        currentPassword,
+        newPassword,
+      });
+      if (result.success) {
+        alert(result.message);
+        onSuccess();
+        onClose();
+      }
+    } catch (err: unknown) {
+      const error = err instanceof Error ? err.message : "Failed to change password";
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md">
+        <div className="text-center mb-6">
+          <div className="text-4xl mb-2">🔑</div>
+          <h2 className="font-serif text-2xl font-bold text-catholic-burgundy">Change Password</h2>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
+            <input
+              type="password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-catholic-burgundy"
+              placeholder="Enter current password"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+            <input
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-catholic-burgundy"
+              placeholder="Enter new password"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-catholic-burgundy"
+              placeholder="Confirm new password"
+              required
+            />
+          </div>
+
+          <div className="text-sm text-gray-500">
+            Password must be at least 8 characters long
+          </div>
+
+          {error && <p className="text-red-600 text-sm">{error}</p>}
+
+          <div className="flex gap-3 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 btn-outline py-2"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="flex-1 btn-primary py-2"
+            >
+              {loading ? "Changing..." : "Change Password"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 export default function AdminDashboard() {
   const { isAdmin, token, login, logout } = useAdminAuth();
   const [activeSection, setActiveSection] = useState<Section>("evangelium");
+  const [showChangePassword, setShowChangePassword] = useState(false);
 
   if (!isAdmin) {
     return <LoginScreen onLogin={login} />;
@@ -145,7 +272,14 @@ export default function AdminDashboard() {
             </button>
           ))}
         </nav>
-        <div className="p-3 border-t border-catholic-burgundy">
+        <div className="p-3 border-t border-catholic-burgundy space-y-2">
+          <button
+            onClick={() => setShowChangePassword(true)}
+            className="w-full flex items-center gap-2 px-3 py-2 rounded text-sm text-white/70 hover:text-white hover:bg-catholic-burgundy transition-colors"
+          >
+            <Key size={14} />
+            Change Password
+          </button>
           <button
             onClick={logout}
             className="w-full flex items-center gap-2 px-3 py-2 rounded text-sm text-white/70 hover:text-white hover:bg-catholic-burgundy transition-colors"
@@ -162,6 +296,15 @@ export default function AdminDashboard() {
           {renderSection()}
         </div>
       </main>
+
+      {/* Change Password Modal */}
+      {showChangePassword && (
+        <ChangePasswordModal 
+          token={token!} 
+          onClose={() => setShowChangePassword(false)}
+          onSuccess={logout}
+        />
+      )}
     </div>
   );
 }

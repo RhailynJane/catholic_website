@@ -3,7 +3,7 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import type { Id } from "../../../../convex/_generated/dataModel";
 import Modal from "../../../components/ui/Modal";
-import { slugify } from "../../../lib/utils";
+import { slugify, stripHtmlTags } from "../../../lib/utils";
 
 type ArticleForm = {
   title: string; slug: string; category: string; content: string;
@@ -54,7 +54,7 @@ export default function AdminArticles({ token }: { token: string }) {
     setIsOpen(true);
   };
   const openEdit = (a: NonNullable<typeof articles>[0]) => {
-    setForm({ title: a.title, slug: a.slug, category: a.category || "", content: a.content,
+    setForm({ title: a.title, slug: a.slug, category: a.category || "", content: stripHtmlTags(a.content),
       summary: a.summary || "", imageUrl: a.imageUrl || "", sortOrder: a.sortOrder });
     setEditId(a._id); setIsOpen(true);
   };
@@ -165,9 +165,9 @@ export default function AdminArticles({ token }: { token: string }) {
             </div>
           ))}
           <div>
-            <label className="block text-xs font-medium mb-1">Content (HTML)</label>
-            <textarea value={form.content} onChange={set("content")} rows={16} placeholder="Article content in HTML..."
-              className="w-full border rounded px-3 py-2 text-sm font-mono focus:outline-none focus:border-catholic-burgundy" />
+            <label className="block text-xs font-medium mb-1">Content</label>
+            <textarea value={form.content} onChange={set("content")} rows={16} placeholder="Write your article content here..."
+              className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:border-catholic-burgundy" />
           </div>
           <div>
             <label className="block text-xs font-medium mb-1">Sort Order</label>

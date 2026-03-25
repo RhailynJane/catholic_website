@@ -3,6 +3,7 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import type { Id } from "../../../../convex/_generated/dataModel";
 import Modal from "../../../components/ui/Modal";
+import { stripHtmlTags } from "../../../lib/utils";
 import { slugify } from "../../../lib/utils";
 
 type FormulaForm = { title: string; slug: string; content: string; source: string; category: string; sortOrder: number; };
@@ -93,9 +94,9 @@ export default function AdminFormulas({ token }: { token: string }) {
             </div>
           ))}
           <div>
-            <label className="block text-xs font-medium mb-1">Content (HTML)</label>
-            <textarea value={form.content} onChange={set("content")} rows={10}
-              className="w-full border rounded px-3 py-2 text-sm font-mono focus:outline-none" />
+            <label className="block text-xs font-medium mb-1">Content</label>
+            <textarea value={form.content} onChange={set("content")} rows={10} placeholder="Write the formula here..."
+              className="w-full border rounded px-3 py-2 text-sm focus:outline-none" />
           </div>
           <div>
             <label className="block text-xs font-medium mb-1">Sort Order</label>
