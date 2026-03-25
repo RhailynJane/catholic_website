@@ -4,9 +4,11 @@
 
 @layer base {
   body {
-    @apply bg-catholic-cream font-sans text-stone-800;
+    @apply font-sans text-accent-500;
+    background: linear-gradient(135deg, #f0f4f8 0%, #ffffff 50%, #e8f1f9 100%);
     margin: 0;
     overflow-y: scroll;
+    min-height: 100vh;
   }
 
   #root {
@@ -28,40 +30,179 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif;
+    @apply font-sans font-semibold tracking-tight;
   }
 
-  .prose-catholic h1 { @apply text-3xl font-serif text-stone-900 mb-4 mt-6 font-normal; }
-  .prose-catholic h2 { @apply text-2xl font-serif text-stone-800 mb-3 mt-6 font-normal italic; scroll-margin-top: 145px; }
-  .prose-catholic h3 { @apply text-xl font-serif text-stone-700 mb-2 mt-4 font-normal; }
-  .prose-catholic p { @apply mb-4 text-stone-700 leading-relaxed font-sans text-base; }
-  .prose-catholic ul { @apply list-disc pl-6 mb-4 text-stone-700 font-sans; }
-  .prose-catholic ol { @apply list-decimal pl-6 mb-4 text-stone-700 font-sans; }
-  .prose-catholic li { @apply mb-2 leading-relaxed; }
-  .prose-catholic strong { @apply font-semibold text-stone-900; }
-  .prose-catholic em { @apply italic text-stone-600; }
-  .prose-catholic blockquote { @apply border-l-2 border-catholic-gold pl-6 italic text-stone-600 my-6 text-lg font-serif; }
-  .prose-catholic a { @apply text-catholic-burgundy underline underline-offset-2 hover:text-catholic-gold-dark; }
-  .prose-catholic hr { @apply border-catholic-cream-dark my-8; }
+  /* Prose Catholic - enhanced for modern minimalist */
+  .prose-catholic {
+    @apply text-accent-400;
+  }
+
+  .prose-catholic h1 { 
+    @apply text-3xl sm:text-4xl lg:text-5xl font-sans font-bold text-accent-500 mb-6 mt-8 tracking-tight; 
+  }
+
+  .prose-catholic h2 { 
+    @apply text-2xl sm:text-3xl lg:text-4xl font-sans font-semibold text-accent-500 mb-4 mt-8 tracking-tight;
+    scroll-margin-top: 100px;
+  }
+
+  .prose-catholic h3 { 
+    @apply text-xl sm:text-2xl lg:text-3xl font-sans font-semibold text-accent-400 mb-3 mt-6 tracking-tight; 
+  }
+
+  .prose-catholic p { 
+    @apply mb-5 text-accent-400 leading-relaxed font-sans text-sm sm:text-base lg:text-lg font-normal; 
+  }
+
+  .prose-catholic ul { 
+    @apply list-disc pl-6 mb-5 text-accent-400 font-sans space-y-2; 
+  }
+
+  .prose-catholic ol { 
+    @apply list-decimal pl-6 mb-5 text-accent-400 font-sans space-y-2; 
+  }
+
+  .prose-catholic li { 
+    @apply leading-relaxed; 
+  }
+
+  .prose-catholic strong { 
+    @apply font-semibold text-accent-500; 
+  }
+
+  .prose-catholic em { 
+    @apply italic text-accent-400; 
+  }
+
+  .prose-catholic blockquote { 
+    @apply bg-white rounded-xl shadow-sm border border-accent-100 p-4 sm:p-6 lg:p-8 italic text-accent-400 my-6 sm:my-8 text-base sm:text-lg lg:text-xl not-italic leading-relaxed; 
+  }
+
+  .prose-catholic a { 
+    @apply text-primary-500 underline underline-offset-2 hover:text-primary-600 transition-colors; 
+  }
+
+  .prose-catholic hr { 
+    @apply bg-gradient-to-r from-primary-200 via-primary-300 to-primary-200 my-8 h-px border-0; 
+  }
 }
 
 @layer components {
+  /* Modern Buttons */
   .btn-primary {
-    @apply bg-catholic-burgundy text-white px-6 py-2.5 font-sans text-xs tracking-widest uppercase hover:bg-catholic-burgundy-dark transition-colors;
+    @apply bg-primary-600 text-white px-4 sm:px-6 py-2 sm:py-3 font-sans text-xs sm:text-sm font-semibold tracking-wide uppercase hover:bg-primary-700 transition-colors rounded;
   }
+
   .btn-secondary {
-    @apply bg-transparent border border-catholic-gold text-catholic-gold px-6 py-2.5 font-sans text-xs tracking-widest uppercase hover:bg-catholic-gold hover:text-white transition-colors;
+    @apply bg-white border-2 border-primary-600 text-primary-600 px-4 sm:px-6 py-2 sm:py-3 font-sans text-xs sm:text-sm font-semibold tracking-wide uppercase hover:bg-primary-50 transition-colors rounded;
   }
+
   .btn-outline {
-    @apply border border-stone-800 text-stone-800 px-6 py-2.5 font-sans text-xs tracking-widest uppercase hover:bg-stone-800 hover:text-white transition-colors;
+    @apply border-2 border-accent-400 text-accent-500 px-4 sm:px-6 py-2 sm:py-3 font-sans text-xs sm:text-sm font-semibold tracking-wide uppercase hover:bg-accent-50 transition-colors rounded;
   }
+
+  /* Modern Floating Buttons */
+  .btn-modern {
+    @apply px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-sans font-semibold text-xs sm:text-sm tracking-wide uppercase rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 inline-block;
+  }
+
+  .btn-modern-secondary {
+    @apply px-6 sm:px-8 py-3 sm:py-4 bg-white text-primary-600 font-sans font-semibold text-xs sm:text-sm tracking-wide uppercase rounded-full shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border-2 border-primary-600 inline-block;
+  }
+
+  .btn-modern-tertiary {
+    @apply px-6 sm:px-8 py-2 sm:py-3 bg-accent-50 text-primary-600 font-sans font-semibold text-xs sm:text-sm tracking-wide uppercase rounded-full shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border border-primary-200 inline-block;
+  }
+
   .card {
-    @apply bg-white border border-stone-200 overflow-hidden;
+    @apply bg-white border border-accent-100 overflow-hidden rounded-lg;
   }
+
+  .card-elevated {
+    @apply bg-white shadow-md hover:shadow-lg transition-shadow rounded-xl overflow-hidden;
+  }
+
+  .card-subtle {
+    @apply bg-white/80 backdrop-blur-sm border border-accent-50 rounded-xl overflow-hidden shadow-sm;
+  }
+
+  .feature-card {
+    @apply bg-white rounded-xl shadow-sm hover:shadow-lg transition-all p-4 sm:p-6 lg:p-8 border border-accent-100 flex flex-col;
+  }
+
+  .highlight-card {
+    @apply bg-gradient-to-br from-primary-50 to-accent-50 rounded-xl shadow-sm border border-primary-100 p-4 sm:p-6 lg:p-8;
+  }
+
+  .quote-card {
+    @apply bg-white rounded-xl shadow-md border border-accent-100 p-4 sm:p-6 lg:p-8 italic text-accent-400 text-base sm:text-lg lg:text-xl;
+  }
+
   .section-title {
-    @apply text-4xl font-serif text-stone-900 font-normal;
+    @apply text-4xl sm:text-5xl lg:text-6xl font-sans font-bold text-accent-500 tracking-tight;
   }
+
   .section-subtitle {
-    @apply text-sm font-sans text-stone-500 mt-2 tracking-wide;
+    @apply text-sm sm:text-base lg:text-lg font-sans text-accent-400 mt-3 tracking-wide;
+  }
+
+  /* Wavy Gradient Background */
+  .wavy-gradient {
+    position: relative;
+    background: linear-gradient(135deg, #d4dce6 0%, #e8f1f9 25%, #f0f4f8 50%, #e8f1f9 75%, #d4dce6 100%);
+    overflow: hidden;
+  }
+
+  .wavy-gradient::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    background: url('data:image/svg+xml,<svg viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="grad1" x1="0%25" y1="0%25" x2="100%25" y2="100%25"><stop offset="0%25" style="stop-color:%23a5b4c9;stop-opacity:0.15" /><stop offset="50%25" style="stop-color:%238fa3ba;stop-opacity:0.1" /><stop offset="100%25" style="stop-color:%237a8fab;stop-opacity:0.15" /></linearGradient></defs><path d="M0,150 Q300,50 600,150 T1200,150 L1200,0 L0,0 Z" fill="url(%23grad1)" opacity="0.6"/><path d="M0,200 Q300,100 600,200 T1200,200 L1200,50 L0,50 Z" fill="url(%23grad1)" opacity="0.4"/><path d="M0,250 Q300,150 600,250 T1200,250 L1200,100 L0,100 Z" fill="url(%23grad1)" opacity="0.2"/></svg>') repeat;
+    background-size: 1200px 400px;
+    animation: wave 15s linear infinite;
+  }
+
+  @keyframes wave {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(600px, 0);
+    }
+  }
+
+  .wavy-gradient > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Commandments styling */
+  .prose-catholic .commandments-list {
+    @apply space-y-4 mb-5;
+  }
+
+  .prose-catholic .commandment-item {
+    @apply p-3 sm:p-4 lg:p-5 bg-white rounded-lg border border-accent-100 shadow-sm hover:shadow-md transition-shadow text-accent-400 leading-relaxed;
+  }
+
+  .prose-catholic .commandment-item strong {
+    @apply block mb-2 text-accent-500;
+  }
+
+  /* Beatitudes styling */
+  .prose-catholic .beatitudes-list {
+    @apply space-y-3 sm:space-y-4 mb-5;
+  }
+
+  .prose-catholic .beatitude-item {
+    @apply p-3 sm:p-4 lg:p-5 bg-white rounded-lg border border-accent-100 shadow-sm hover:shadow-md transition-shadow text-accent-400 leading-relaxed;
+  }
+
+  .prose-catholic .beatitude-item strong {
+    @apply block mb-2 text-accent-500;
   }
 }

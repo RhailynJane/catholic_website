@@ -111,11 +111,11 @@ export default function AdminArticles({ token }: { token: string }) {
       )}
 
       <input type="text" placeholder="Search articles..." value={search} onChange={(e) => setSearch(e.target.value)}
-        className="w-full border border-gray-300 rounded px-3 py-2 mb-4" />
+        className="w-full border border-accent-100 rounded px-3 py-2 mb-4 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100" />
 
       <div className="bg-white rounded-xl shadow overflow-hidden">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b">
+          <thead className="bg-accent-50 border-b">
             <tr>
               <th className="px-4 py-3 text-left">Title</th>
               <th className="px-4 py-3 text-left">Category</th>
@@ -126,10 +126,10 @@ export default function AdminArticles({ token }: { token: string }) {
           </thead>
           <tbody className="divide-y">
             {filtered.map((a) => (
-              <tr key={a._id} className="hover:bg-gray-50">
+              <tr key={a._id} className="hover:bg-accent-50">
                 <td className="px-4 py-3 font-medium">{a.title}</td>
-                <td className="px-4 py-3 text-gray-500">{a.category}</td>
-                <td className="px-4 py-3 text-gray-400 text-xs">{a.slug}</td>
+                <td className="px-4 py-3 text-accent-400">{a.category}</td>
+                <td className="px-4 py-3 text-accent-300 text-xs">{a.slug}</td>
                 <td className="px-4 py-3">
                   <span className={`text-xs px-2 py-0.5 rounded-full ${a.isActive ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}>
                     {a.isActive ? "Active" : "Hidden"}
@@ -144,7 +144,7 @@ export default function AdminArticles({ token }: { token: string }) {
               </tr>
             ))}
             {filtered.length === 0 && (
-              <tr><td colSpan={5} className="px-4 py-8 text-center text-gray-400">No articles yet. Use the quick-add above!</td></tr>
+              <tr><td colSpan={5} className="px-4 py-8 text-center text-accent-300">No articles yet. Use the quick-add above!</td></tr>
             )}
           </tbody>
         </table>
@@ -161,13 +161,13 @@ export default function AdminArticles({ token }: { token: string }) {
             <div key={k}>
               <label className="block text-xs font-medium mb-1">{label}</label>
               <input value={form[k]} onChange={set(k)} placeholder={placeholder}
-                className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:border-catholic-burgundy" />
+                className="w-full border border-accent-100 rounded px-3 py-2 text-sm focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-100" />
             </div>
           ))}
           <div>
             <label className="block text-xs font-medium mb-1">Content</label>
             <textarea value={form.content} onChange={set("content")} rows={16} placeholder="Write your article content here..."
-              className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:border-catholic-burgundy" />
+              className="w-full border border-accent-100 rounded px-3 py-2 text-sm focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-100" />
           </div>
           <div>
             <label className="block text-xs font-medium mb-1">Sort Order</label>

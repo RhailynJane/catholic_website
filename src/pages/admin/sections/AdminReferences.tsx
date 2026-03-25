@@ -58,7 +58,7 @@ export default function AdminReferences({ token }: { token: string }) {
 
       <div className="bg-white rounded-xl shadow overflow-hidden">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b">
+          <thead className="bg-accent-50 border-b">
             <tr>
               <th className="px-4 py-3 text-left">Title</th>
               <th className="px-4 py-3 text-left">Site</th>
@@ -68,7 +68,7 @@ export default function AdminReferences({ token }: { token: string }) {
           </thead>
           <tbody className="divide-y">
             {(refs || []).map((r) => (
-              <tr key={r._id} className="hover:bg-gray-50">
+              <tr key={r._id} className="hover:bg-accent-50">
                 <td className="px-4 py-3 font-medium">{r.title}</td>
                 <td className="px-4 py-3 text-gray-500">
                   <a href={r.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{r.site}</a>
@@ -98,13 +98,13 @@ export default function AdminReferences({ token }: { token: string }) {
             <div key={k}>
               <label className="block text-xs font-medium mb-1">{label}</label>
               <input value={form[k]} onChange={set(k)} placeholder={placeholder}
-                className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:border-catholic-burgundy" />
+                className="w-full border border-accent-100 rounded px-3 py-2 text-sm focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-100" />
             </div>
           ))}
           <div>
             <label className="block text-xs font-medium mb-1">Description</label>
             <textarea value={form.description} onChange={set("description")} rows={3}
-              className="w-full border rounded px-3 py-2 text-sm focus:outline-none" />
+              className="w-full border border-accent-100 rounded px-3 py-2 text-sm focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-100" />
           </div>
           <div>
             <label className="block text-xs font-medium mb-1">Sort Order</label>

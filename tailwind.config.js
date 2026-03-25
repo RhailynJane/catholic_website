@@ -7,20 +7,25 @@ export default {
   theme: {
     extend: {
       colors: {
-        catholic: {
-          burgundy: "#4A3B2E",
-          "burgundy-dark": "#2D2318",
-          "burgundy-light": "#8B7355",
-          gold: "#C9A84C",
-          "gold-light": "#E8C96A",
-          "gold-dark": "#A08030",
-          cream: "#F7F3ED",
-          "cream-dark": "#EDE5D8",
-          darkblue: "#4A3B2E",
-          "darkblue-light": "#8B7355",
-          parchment: "#F0E8D8",
-          stone: "#6B6058",
-          "stone-light": "#A09488",
+        primary: {
+          50: "#f0f4f8",
+          100: "#d9e2ec",
+          200: "#b3c5d8",
+          300: "#6b8cae",
+          400: "#4a7399",
+          500: "#34568b",
+          600: "#2a4678",
+          700: "#1f3456",
+          800: "#152338",
+          900: "#0f1620",
+        },
+        accent: {
+          50: "#f5f5f5",
+          100: "#e7e7e7",
+          200: "#cccccc",
+          300: "#999999",
+          400: "#666666",
+          500: "#333333",
         },
       },
       fontFamily: {
@@ -31,3 +36,4 @@ export default {
   },
   plugins: [],
 }
+

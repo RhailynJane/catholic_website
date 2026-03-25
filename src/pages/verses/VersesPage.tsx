@@ -41,62 +41,82 @@ export default function VersesPage() {
         subtitle="Scripture for Meditation, Study, and Prayer"
       />
 
-      <div className="max-w-5xl mx-auto px-6 py-12">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* Filters */}
-        <div className="flex flex-col sm:flex-row gap-3 mb-10">
-          <input
-            type="text"
-            placeholder="Search verses..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="flex-1 border border-stone-200 px-4 py-2.5 text-sm font-sans focus:outline-none focus:border-stone-400 bg-white"
-          />
-          <select
-            value={filterBook}
-            onChange={(e) => setFilterBook(e.target.value)}
-            className="border border-stone-200 px-4 py-2.5 text-sm font-sans focus:outline-none focus:border-stone-400 bg-white"
-          >
-            <option value="">All Books</option>
-            {books.map((b) => <option key={b} value={b}>{b}</option>)}
-          </select>
-          <select
-            value={filterCategory}
-            onChange={(e) => setFilterCategory(e.target.value)}
-            className="border border-stone-200 px-4 py-2.5 text-sm font-sans focus:outline-none focus:border-stone-400 bg-white"
-          >
-            <option value="">All Categories</option>
-            {categories.map((c) => <option key={c} value={c}>{c}</option>)}
-          </select>
+        <div className="mb-12 px-4 sm:px-0">
+          <div className="text-center mb-8">
+            <p className="text-[10px] tracking-[0.45em] uppercase text-primary-600 font-sans mb-2 font-semibold">Search & Filter</p>
+            <div className="w-12 h-1 bg-primary-600 mx-auto rounded"></div>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <input
+              type="text"
+              placeholder="Search verses..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="flex-1 border border-accent-100 px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-sans focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100 bg-white rounded shadow-sm hover:shadow-md transition-shadow"
+            />
+            <select
+              value={filterBook}
+              onChange={(e) => setFilterBook(e.target.value)}
+              className="border border-accent-100 px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-sans focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100 bg-white rounded shadow-sm hover:shadow-md transition-shadow"
+            >
+              <option value="">All Books</option>
+              {books.map((b) => <option key={b} value={b}>{b}</option>)}
+            </select>
+            <select
+              value={filterCategory}
+              onChange={(e) => setFilterCategory(e.target.value)}
+              className="border border-accent-100 px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-sans focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100 bg-white rounded shadow-sm hover:shadow-md transition-shadow"
+            >
+              <option value="">All Categories</option>
+              {categories.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </div>
         </div>
 
         {verses === undefined ? (
           <Spinner />
         ) : filtered.length === 0 ? (
-          <div className="text-center py-20 text-stone-400 font-sans text-sm">
+          <div className="text-center py-20 text-accent-300 font-sans text-sm">
             No verses found.
           </div>
         ) : (
-          <div className="space-y-0">
-            <p className="text-[10px] tracking-[0.3em] uppercase text-stone-400 font-sans mb-6">
+          <div className="space-y-6">
+            <p className="text-[10px] tracking-[0.3em] uppercase text-primary-600 font-sans mb-6 font-semibold">
               {filtered.length} verse{filtered.length !== 1 ? "s" : ""}
             </p>
             {filtered.map((v) => (
-              <div key={v._id} className="border-b border-stone-100 py-6 flex items-start gap-8">
-                <div className="flex-1">
-                  <blockquote className="font-serif text-xl text-stone-800 italic font-light leading-relaxed">
-                    "{v.text}"
-                  </blockquote>
-                  {v.category && (
-                    <span className="mt-3 inline-block text-[9px] bg-stone-100 text-stone-500 px-2 py-0.5 uppercase tracking-wide font-sans">
-                      {v.category}
+              <div key={v._id} className="feature-card border-t-2 border-primary-100 hover:border-primary-600 hover:shadow-lg transition-all">
+                {v.imageUrl && (
+                  <div className="h-48 overflow-hidden rounded-lg mb-6 -m-8 mb-6">
+                    <img
+                      src={v.imageUrl}
+                      alt={`${v.book} ${v.chapter}:${v.verse}`}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).parentElement!.style.display = "none";
+                      }}
+                    />
+                  </div>
+                )}
+                <div className="flex items-start gap-6">
+                  <div className="flex-1">
+                    <blockquote className="font-sans text-xl text-accent-500 font-semibold leading-relaxed">
+                      "{v.text}"
+                    </blockquote>
+                    {v.category && (
+                      <span className="mt-4 inline-block text-[9px] bg-primary-100 text-primary-600 px-3 py-1 uppercase tracking-wide font-sans font-semibold rounded-full border border-primary-200">
+                        {v.category}
+                      </span>
+                    )}
+                  </div>
+                  <div className="shrink-0 text-right min-w-[120px]">
+                    <span className="font-sans text-base text-accent-500 block leading-snug font-semibold">
+                      {formatReference(v.book, v.chapter, v.verse, v.verseEnd)}
                     </span>
-                  )}
-                </div>
-                <div className="shrink-0 text-right min-w-[80px]">
-                  <span className="font-serif text-sm text-stone-700 block leading-snug">
-                    {formatReference(v.book, v.chapter, v.verse, v.verseEnd)}
-                  </span>
-                  <span className="text-[9px] text-stone-400 font-sans tracking-wide">{v.translation}</span>
+                    <span className="text-[10px] text-accent-300 font-sans tracking-wide uppercase mt-1 block">{v.translation}</span>
+                  </div>
                 </div>
               </div>
             ))}

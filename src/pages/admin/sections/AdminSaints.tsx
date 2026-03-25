@@ -92,12 +92,12 @@ export default function AdminSaints({ token }: { token: string }) {
       <input
         type="text" placeholder="Search saints..."
         value={search} onChange={(e) => setSearch(e.target.value)}
-        className="w-full border border-gray-300 rounded px-3 py-2 mb-4 focus:outline-none"
+        className="w-full border border-accent-100 rounded px-3 py-2 mb-4 focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-100"
       />
 
       <div className="bg-white rounded-xl shadow overflow-hidden">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b">
+          <thead className="bg-accent-50 border-b">
             <tr>
               <th className="px-4 py-3 text-left font-medium text-gray-700">Name</th>
               <th className="px-4 py-3 text-left font-medium text-gray-700">Feast Date</th>
@@ -107,9 +107,9 @@ export default function AdminSaints({ token }: { token: string }) {
           </thead>
           <tbody className="divide-y">
             {filtered.map((s) => (
-              <tr key={s._id} className="hover:bg-gray-50">
+              <tr key={s._id} className="hover:bg-accent-50">
                 <td className="px-4 py-3 font-medium">{s.name}</td>
-                <td className="px-4 py-3 text-gray-500">{s.feastDate}</td>
+                <td className="px-4 py-3 text-accent-300 text-xs">{s.feastDate}</td>
                 <td className="px-4 py-3 text-gray-400 text-xs">{s.tags.join(", ")}</td>
                 <td className="px-4 py-3 text-right">
                   <button onClick={() => openEdit(s)} className="text-blue-600 hover:underline mr-3">Edit</button>
@@ -139,30 +139,30 @@ export default function AdminSaints({ token }: { token: string }) {
             <div key={k}>
               <label className="block text-xs font-medium text-gray-700 mb-1">{label}</label>
               <input type="text" value={form[k]} onChange={set(k)} placeholder={placeholder}
-                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-catholic-burgundy" />
+                className="w-full border border-accent-100 rounded px-3 py-2 text-sm focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-100" />
             </div>
           ))}
           <div className="grid grid-cols-3 gap-2">
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-1">Day of Year (1-365)</label>
               <input type="number" value={form.dayOfYear} onChange={set("dayOfYear")} min={1} max={365}
-                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none" />
+                className="w-full border border-accent-100 rounded px-3 py-2 text-sm focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-100" />
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-1">Month</label>
               <input type="number" value={form.month} onChange={set("month")} min={1} max={12}
-                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none" />
+                className="w-full border border-accent-100 rounded px-3 py-2 text-sm focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-100" />
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-1">Day</label>
               <input type="number" value={form.day} onChange={set("day")} min={1} max={31}
-                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none" />
+                className="w-full border border-accent-100 rounded px-3 py-2 text-sm focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-100" />
             </div>
           </div>
           <div>
             <label className="block text-xs font-medium text-gray-700 mb-1">Full Biography</label>
             <textarea value={form.fullBio} onChange={set("fullBio")} rows={8} placeholder="Full biography of the saint..."
-              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-catholic-burgundy" />
+              className="w-full border border-accent-100 rounded px-3 py-2 text-sm focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-100" />
           </div>
           <button onClick={handleSave} className="w-full btn-primary">Save Saint</button>
         </div>

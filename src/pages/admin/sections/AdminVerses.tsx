@@ -6,11 +6,11 @@ import Modal from "../../../components/ui/Modal";
 
 type VerseForm = {
   book: string; chapter: number; verse: number; verseEnd: number;
-  text: string; translation: string; category: string; tags: string;
+  text: string; translation: string; category: string; imageUrl: string; tags: string;
 };
 
 const empty: VerseForm = {
-  book: "", chapter: 1, verse: 1, verseEnd: 0, text: "", translation: "RSVCE", category: "", tags: "",
+  book: "", chapter: 1, verse: 1, verseEnd: 0, text: "", translation: "RSVCE", category: "", imageUrl: "", tags: "",
 };
 
 export default function AdminVerses({ token }: { token: string }) {
@@ -33,7 +33,7 @@ export default function AdminVerses({ token }: { token: string }) {
   const openEdit = (v: NonNullable<typeof verses>[0]) => {
     setForm({
       book: v.book, chapter: v.chapter, verse: v.verse, verseEnd: v.verseEnd || 0,
-      text: v.text, translation: v.translation, category: v.category || "", tags: v.tags.join(", "),
+      text: v.text, translation: v.translation, category: v.category || "", imageUrl: v.imageUrl || "", tags: v.tags.join(", "),
     });
     setEditId(v._id);
     setIsOpen(true);
@@ -45,6 +45,7 @@ export default function AdminVerses({ token }: { token: string }) {
         ...form,
         verseEnd: form.verseEnd || undefined,
         category: form.category || undefined,
+        imageUrl: form.imageUrl || undefined,
         tags: form.tags.split(",").map((t) => t.trim()).filter(Boolean),
       };
       if (editId) await updateMutation({ token, id: editId, ...data });
@@ -68,10 +69,10 @@ export default function AdminVerses({ token }: { token: string }) {
         <button onClick={openNew} className="btn-primary">+ Add Verse</button>
       </div>
       <input type="text" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)}
-        className="w-full border border-gray-300 rounded px-3 py-2 mb-4" />
+        className="w-full border border-accent-100 rounded px-3 py-2 mb-4 focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-100" />
       <div className="bg-white rounded-xl shadow overflow-hidden">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b">
+          <thead className="bg-accent-50 border-b">
             <tr>
               <th className="px-4 py-3 text-left">Reference</th>
               <th className="px-4 py-3 text-left">Text (preview)</th>
@@ -81,10 +82,10 @@ export default function AdminVerses({ token }: { token: string }) {
           </thead>
           <tbody className="divide-y">
             {filtered.map((v) => (
-              <tr key={v._id} className="hover:bg-gray-50">
+              <tr key={v._id} className="hover:bg-accent-50">
                 <td className="px-4 py-3 font-medium whitespace-nowrap">{v.book} {v.chapter}:{v.verse}</td>
-                <td className="px-4 py-3 text-gray-500 max-w-xs truncate">{v.text.slice(0, 80)}...</td>
-                <td className="px-4 py-3 text-gray-400">{v.translation}</td>
+                <td className="px-4 py-3 text-accent-400 max-w-xs truncate">{v.text.slice(0, 80)}...</td>
+                <td className="px-4 py-3 text-accent-300">{v.translation}</td>
                 <td className="px-4 py-3 text-right">
                   <button onClick={() => openEdit(v)} className="text-blue-600 hover:underline mr-3">Edit</button>
                   <button onClick={() => handleDelete(v._id)} className="text-red-600 hover:underline">Delete</button>
@@ -92,7 +93,7 @@ export default function AdminVerses({ token }: { token: string }) {
               </tr>
             ))}
             {filtered.length === 0 && (
-              <tr><td colSpan={4} className="px-4 py-8 text-center text-gray-400">No verses yet</td></tr>
+              <tr><td colSpan={4} className="px-4 py-8 text-center text-accent-300">No verses yet</td></tr>
             )}
           </tbody>
         </table>
@@ -135,6 +136,10 @@ export default function AdminVerses({ token }: { token: string }) {
               <label className="block text-xs font-medium mb-1">Category</label>
               <input value={form.category} onChange={set("category")} placeholder="Lent, Easter..." className="w-full border rounded px-3 py-2 text-sm" />
             </div>
+          </div>
+          <div>
+            <label className="block text-xs font-medium mb-1">Image URL (optional)</label>
+            <input value={form.imageUrl} onChange={set("imageUrl")} placeholder="https://example.com/image.jpg" className="w-full border rounded px-3 py-2 text-sm" />
           </div>
           <div>
             <label className="block text-xs font-medium mb-1">Tags (comma-separated)</label>

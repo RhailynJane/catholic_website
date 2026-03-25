@@ -16,10 +16,12 @@ import type * as checkSaints3 from "../checkSaints3.js";
 import type * as checkSaints4 from "../checkSaints4.js";
 import type * as checkSaints5 from "../checkSaints5.js";
 import type * as evangelium from "../evangelium.js";
+import type * as fetchSaintImages from "../fetchSaintImages.js";
 import type * as formulas from "../formulas.js";
 import type * as getAllSaints from "../getAllSaints.js";
 import type * as prayers from "../prayers.js";
 import type * as references from "../references.js";
+import type * as saintImagesData from "../saintImagesData.js";
 import type * as saints from "../saints.js";
 import type * as seed from "../seed.js";
 import type * as seed10 from "../seed10.js";
@@ -39,6 +41,7 @@ import type * as seed6 from "../seed6.js";
 import type * as seed7 from "../seed7.js";
 import type * as seed8 from "../seed8.js";
 import type * as seed9 from "../seed9.js";
+import type * as updateCommandments from "../updateCommandments.js";
 import type * as verses from "../verses.js";
 
 import type {
@@ -56,10 +59,12 @@ declare const fullApi: ApiFromModules<{
   checkSaints4: typeof checkSaints4;
   checkSaints5: typeof checkSaints5;
   evangelium: typeof evangelium;
+  fetchSaintImages: typeof fetchSaintImages;
   formulas: typeof formulas;
   getAllSaints: typeof getAllSaints;
   prayers: typeof prayers;
   references: typeof references;
+  saintImagesData: typeof saintImagesData;
   saints: typeof saints;
   seed: typeof seed;
   seed10: typeof seed10;
@@ -79,6 +84,7 @@ declare const fullApi: ApiFromModules<{
   seed7: typeof seed7;
   seed8: typeof seed8;
   seed9: typeof seed9;
+  updateCommandments: typeof updateCommandments;
   verses: typeof verses;
 }>;
 

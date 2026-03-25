@@ -17,25 +17,32 @@ export default function ArticleDetail() {
   );
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12">
-      <Link to="/information" className="text-[10px] tracking-[0.3em] uppercase text-stone-400 hover:text-stone-700 font-sans transition-colors">
-        ← Catholic Information
-      </Link>
-
-      {/* Header */}
-      <div className="mt-8 pb-8 border-b border-stone-200">
-        {article.category && (
-          <p className="text-[9px] tracking-[0.5em] uppercase text-stone-400 font-sans mb-3">{article.category}</p>
-        )}
-        <h1 className="font-serif text-5xl text-stone-900 font-light italic leading-tight">{article.title}</h1>
-        {article.summary && (
-          <p className="mt-4 text-stone-500 font-sans text-base leading-relaxed">{article.summary}</p>
-        )}
-        <div className="mt-6 h-px w-12 bg-catholic-gold" />
+    <div className="min-h-screen">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <Link to="/information" className="text-[10px] tracking-[0.3em] uppercase text-accent-300 hover:text-primary-600 font-sans transition-colors inline-flex items-center gap-2 font-semibold">
+          ← Back to Articles
+        </Link>
       </div>
 
-      <div className="mt-8 prose-catholic">
-        <RichTextRenderer content={article.content} />
+      {/* Wavy gradient background section */}
+      <div className="wavy-gradient py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="pb-8">
+            <div className="mb-6 text-4xl font-sans">✦</div>
+            {article.category && (
+              <p className="text-[9px] tracking-[0.5em] uppercase text-primary-600 font-sans mb-3 font-semibold">{article.category}</p>
+            )}
+            <h1 className="font-sans font-bold text-4xl sm:text-5xl lg:text-6xl text-accent-500 leading-tight">{article.title}</h1>
+            {article.summary && (
+              <p className="mt-6 text-accent-400 font-sans text-lg leading-relaxed">{article.summary}</p>
+            )}
+          </div>
+
+          <div className="mt-12 prose-catholic">
+            <RichTextRenderer content={article.content} />
+          </div>
+        </div>
       </div>
     </div>
   );

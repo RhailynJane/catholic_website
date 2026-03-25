@@ -9,9 +9,10 @@ import AdminArticles from "./sections/AdminArticles";
 import AdminFormulas from "./sections/AdminFormulas";
 import AdminReferences from "./sections/AdminReferences";
 import AdminEvangelium from "./sections/AdminEvangelium";
+import AdminImages from "./sections/AdminImages";
 import { LogOut, Lock, Key } from "lucide-react";
 
-type Section = "saints" | "verses" | "prayers" | "articles" | "formulas" | "references" | "evangelium";
+type Section = "saints" | "verses" | "prayers" | "articles" | "formulas" | "references" | "evangelium" | "images";
 
 const sections: { id: Section; label: string; icon: string }[] = [
   { id: "evangelium", label: "Evangelium", icon: "✝" },
@@ -21,6 +22,7 @@ const sections: { id: Section; label: string; icon: string }[] = [
   { id: "articles", label: "Articles", icon: "⛪" },
   { id: "formulas", label: "Formulas", icon: "📋" },
   { id: "references", label: "References", icon: "🔗" },
+  { id: "images", label: "Images", icon: "🖼️" },
 ];
 
 function LoginScreen({ onLogin }: { onLogin: (pw: string) => Promise<boolean> }) {
@@ -51,11 +53,11 @@ function LoginScreen({ onLogin }: { onLogin: (pw: string) => Promise<boolean> })
   };
 
   return (
-    <div className="min-h-screen bg-catholic-cream flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md">
+    <div className="min-h-screen bg-white flex items-center justify-center p-4">
+      <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md border border-accent-100">
         <div className="text-center mb-8">
           <div className="text-5xl mb-4">🔐</div>
-          <h1 className="font-serif text-3xl font-bold text-catholic-burgundy">Admin Access</h1>
+          <h1 className="text-3xl font-bold text-primary-600">Admin Access</h1>
           <p className="text-gray-500 text-sm mt-2">Enter your admin password to continue</p>
         </div>
 
@@ -66,7 +68,7 @@ function LoginScreen({ onLogin }: { onLogin: (pw: string) => Promise<boolean> })
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-catholic-burgundy"
+              className="w-full border border-accent-100 rounded-lg px-4 py-3 focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-100"
               placeholder="Admin password"
               required
             />
@@ -159,7 +161,7 @@ function ChangePasswordModal({ token, onClose, onSuccess }: { token: string; onC
       <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md">
         <div className="text-center mb-6">
           <div className="text-4xl mb-2">🔑</div>
-          <h2 className="font-serif text-2xl font-bold text-catholic-burgundy">Change Password</h2>
+          <h2 className="text-2xl font-bold text-primary-600">Change Password</h2>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -169,7 +171,7 @@ function ChangePasswordModal({ token, onClose, onSuccess }: { token: string; onC
               type="password"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-catholic-burgundy"
+              className="w-full border border-accent-100 rounded-lg px-4 py-2 focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-100"
               placeholder="Enter current password"
               required
             />
@@ -181,7 +183,7 @@ function ChangePasswordModal({ token, onClose, onSuccess }: { token: string; onC
               type="password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-catholic-burgundy"
+              className="w-full border border-accent-100 rounded-lg px-4 py-2 focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-100"
               placeholder="Enter new password"
               required
             />
@@ -193,7 +195,7 @@ function ChangePasswordModal({ token, onClose, onSuccess }: { token: string; onC
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-catholic-burgundy"
+              className="w-full border border-accent-100 rounded-lg px-4 py-2 focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-100"
               placeholder="Confirm new password"
               required
             />
@@ -245,15 +247,16 @@ export default function AdminDashboard() {
       case "articles": return <AdminArticles token={token!} />;
       case "formulas": return <AdminFormulas token={token!} />;
       case "references": return <AdminReferences token={token!} />;
+      case "images": return <AdminImages />;
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-100 flex">
       {/* Sidebar */}
-      <aside className="w-56 bg-catholic-burgundy-dark text-white flex flex-col shrink-0">
-        <div className="p-5 border-b border-catholic-burgundy">
-          <h1 className="font-serif text-lg font-bold text-catholic-gold">✝ Admin Panel</h1>
+      <aside className="w-56 bg-primary-800 text-white flex flex-col shrink-0">
+        <div className="p-5 border-b border-primary-700">
+          <h1 className="text-lg font-bold text-accent-100">✝ Admin Panel</h1>
           <p className="text-xs text-white/60 mt-1">Catholic Faith</p>
         </div>
         <nav className="flex-1 p-3 space-y-1">
@@ -263,8 +266,8 @@ export default function AdminDashboard() {
               onClick={() => setActiveSection(s.id)}
               className={`w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors text-left ${
                 activeSection === s.id
-                  ? "bg-catholic-burgundy text-catholic-gold"
-                  : "text-white/70 hover:bg-catholic-burgundy hover:text-white"
+                  ? "bg-primary-700 text-white"
+                  : "text-white/70 hover:bg-primary-700 hover:text-white"
               }`}
             >
               <span>{s.icon}</span>
@@ -272,7 +275,7 @@ export default function AdminDashboard() {
             </button>
           ))}
         </nav>
-        <div className="p-3 border-t border-catholic-burgundy space-y-2">
+        <div className="p-3 border-t border-primary-700 space-y-2">
           <button
             onClick={() => setShowChangePassword(true)}
             className="w-full flex items-center gap-2 px-3 py-2 rounded text-sm text-white/70 hover:text-white hover:bg-catholic-burgundy transition-colors"
@@ -282,7 +285,7 @@ export default function AdminDashboard() {
           </button>
           <button
             onClick={logout}
-            className="w-full flex items-center gap-2 px-3 py-2 rounded text-sm text-white/70 hover:text-white hover:bg-catholic-burgundy transition-colors"
+            className="w-full flex items-center gap-2 px-3 py-2 rounded text-sm text-white/70 hover:text-white hover:bg-primary-700 transition-colors"
           >
             <LogOut size={14} />
             Logout

@@ -21,7 +21,7 @@ export default function AdminFormulas({ token }: { token: string }) {
 
   const openNew = () => { setForm(empty); setEditId(null); setIsOpen(true); };
   const openEdit = (f: NonNullable<typeof formulas>[0]) => {
-    setForm({ title: f.title, slug: f.slug, content: f.content, source: f.source || "", category: f.category || "", sortOrder: f.sortOrder });
+    setForm({ title: f.title, slug: f.slug, content: stripHtmlTags(f.content), source: f.source || "", category: f.category || "", sortOrder: f.sortOrder });
     setEditId(f._id); setIsOpen(true);
   };
 
@@ -52,7 +52,7 @@ export default function AdminFormulas({ token }: { token: string }) {
       </div>
       <div className="bg-white rounded-xl shadow overflow-hidden">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b">
+          <thead className="bg-accent-50 border-b">
             <tr>
               <th className="px-4 py-3 text-left">Title</th>
               <th className="px-4 py-3 text-left">Category</th>
@@ -62,7 +62,7 @@ export default function AdminFormulas({ token }: { token: string }) {
           </thead>
           <tbody className="divide-y">
             {(formulas || []).map((f) => (
-              <tr key={f._id} className="hover:bg-gray-50">
+              <tr key={f._id} className="hover:bg-accent-50">
                 <td className="px-4 py-3 font-medium">{f.title}</td>
                 <td className="px-4 py-3 text-gray-500">{f.category}</td>
                 <td className="px-4 py-3 text-gray-400 text-xs">{f.source}</td>
@@ -90,13 +90,13 @@ export default function AdminFormulas({ token }: { token: string }) {
             <div key={k}>
               <label className="block text-xs font-medium mb-1">{label}</label>
               <input value={form[k]} onChange={set(k)} placeholder={placeholder}
-                className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:border-catholic-burgundy" />
+                className="w-full border border-accent-100 rounded px-3 py-2 text-sm focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-100" />
             </div>
           ))}
           <div>
             <label className="block text-xs font-medium mb-1">Content</label>
             <textarea value={form.content} onChange={set("content")} rows={10} placeholder="Write the formula here..."
-              className="w-full border rounded px-3 py-2 text-sm focus:outline-none" />
+              className="w-full border border-accent-100 rounded px-3 py-2 text-sm focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-100" />
           </div>
           <div>
             <label className="block text-xs font-medium mb-1">Sort Order</label>

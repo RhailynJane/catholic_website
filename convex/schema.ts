@@ -42,6 +42,7 @@ export default defineSchema({
     text: v.string(),
     translation: v.string(),
     category: v.optional(v.string()),
+    imageUrl: v.optional(v.string()),
     tags: v.array(v.string()),
     isActive: v.boolean(),
   })

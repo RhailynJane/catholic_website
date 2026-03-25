@@ -22,49 +22,55 @@ export default function FormulasPage() {
         subtitle="Essential Statements of the Catholic Faith"
       />
 
-      <div className="max-w-4xl mx-auto px-6 py-12">
-        <input
-          type="text"
-          placeholder="Search formulas..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full border border-stone-200 px-4 py-2.5 text-sm font-sans focus:outline-none focus:border-stone-400 bg-white mb-10"
-        />
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="mb-12 px-4 sm:px-0">
+          <div className="text-center mb-8">
+            <p className="text-[10px] tracking-[0.45em] uppercase text-primary-600 font-sans mb-2 font-semibold">Search</p>
+            <div className="w-12 h-1 bg-primary-600 mx-auto rounded"></div>
+          </div>
+          <input
+            type="text"
+            placeholder="Search formulas..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full border border-accent-100 px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-sans focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100 bg-white rounded shadow-sm hover:shadow-md transition-shadow"
+          />
+        </div>
 
         {formulas === undefined ? (
           <Spinner />
         ) : filtered.length === 0 ? (
-          <div className="text-center py-20 text-stone-400 font-sans text-sm">
+          <div className="text-center py-20 text-accent-300 font-sans text-sm">
             No formulas found.
           </div>
         ) : (
-          <div className="divide-y divide-stone-100 border-t border-stone-100">
+          <div className="space-y-4">
             {filtered.map((formula) => (
-              <div key={formula._id}>
+              <div key={formula._id} className="feature-card group border-l-4 border-primary-100 hover:border-primary-600 hover:shadow-lg transition-all">
                 <button
-                  className="w-full flex items-center justify-between py-5 text-left hover:bg-catholic-cream/50 transition-colors px-1 group"
+                  className="w-full flex items-center justify-between text-left transition-colors"
                   onClick={() => setOpenId(openId === formula._id ? null : formula._id)}
                 >
-                  <div>
+                  <div className="flex-1">
                     {formula.category && (
-                      <span className="text-[9px] tracking-[0.4em] uppercase text-stone-400 font-sans block mb-1">
+                      <span className="text-[9px] tracking-[0.4em] uppercase text-primary-600 font-sans font-semibold block mb-2">
                         {formula.category}
                       </span>
                     )}
-                    <h3 className="font-serif text-xl text-stone-900 font-normal group-hover:text-stone-600 transition-colors">
+                    <h3 className="font-sans font-bold text-lg text-accent-500 group-hover:text-primary-600 transition-colors">
                       {formula.title}
                     </h3>
                     {formula.source && (
-                      <p className="text-[10px] text-stone-400 font-sans mt-0.5">Source: {formula.source}</p>
+                      <p className="text-[10px] text-accent-300 font-sans mt-2">Source: {formula.source}</p>
                     )}
                   </div>
-                  <span className={`text-stone-400 transition-transform ml-6 shrink-0 ${openId === formula._id ? "rotate-180" : ""}`}>
+                  <span className={`text-accent-400 group-hover:text-primary-600 transition-all ml-6 shrink-0 text-xl duration-300 ${openId === formula._id ? "rotate-180" : ""}`}>
                     ▾
                   </span>
                 </button>
                 {openId === formula._id && (
-                  <div className="px-1 pb-6">
-                    <div className="border-l-2 border-catholic-gold pl-6 prose-catholic">
+                  <div className="mt-6 pt-6 border-t border-accent-50">
+                    <div className="prose-catholic text-accent-500">
                       <RichTextRenderer content={formula.content} />
                     </div>
                   </div>

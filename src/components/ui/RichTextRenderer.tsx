@@ -18,7 +18,7 @@ export default function RichTextRenderer({ content, className = "" }: Props) {
         "hr", "div", "span", "table", "thead", "tbody", "tr", "th", "td",
         "sup", "sub",
       ],
-      ALLOWED_ATTR: ["href", "target", "rel", "class", "id"],
+      ALLOWED_ATTR: ["href", "target", "rel", "class", "id", "data-*"],
     });
 
     return (

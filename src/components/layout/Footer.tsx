@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer className="bg-white border-t border-stone-200 mt-16">
-      <div className="max-w-7xl mx-auto px-6 py-12">
+    <footer className="bg-white border-t border-stone-200 mt-12 sm:mt-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           <div className="md:col-span-1">
             <div className="flex items-center gap-3 mb-4">
@@ -77,7 +77,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-stone-100 mt-10 pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
+        <div className="border-t border-stone-100 mt-8 sm:mt-10 pt-4 sm:pt-6 flex flex-col md:flex-row items-center justify-between gap-2 sm:gap-3">
           <p className="text-[10px] font-sans text-stone-400 italic font-serif">
             "Ignorance of Scripture is ignorance of Christ." — St. Jerome
           </p>

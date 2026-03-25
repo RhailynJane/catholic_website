@@ -44,6 +44,7 @@ export const create = mutation({
     text: v.string(),
     translation: v.string(),
     category: v.optional(v.string()),
+    imageUrl: v.optional(v.string()),
     tags: v.array(v.string()),
   },
   handler: async (ctx, { token, ...data }) => {
@@ -68,6 +69,7 @@ export const update = mutation({
     text: v.optional(v.string()),
     translation: v.optional(v.string()),
     category: v.optional(v.string()),
+    imageUrl: v.optional(v.string()),
     tags: v.optional(v.array(v.string())),
     isActive: v.optional(v.boolean()),
   },

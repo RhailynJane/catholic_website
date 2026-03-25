@@ -58,8 +58,8 @@ export default function AdminEvangelium({ token }: { token: string }) {
             onClick={() => handleTabChange(tab.id)}
             className={`px-4 py-2 rounded text-sm font-medium transition-colors ${
               activeTab === tab.id
-                ? "bg-catholic-burgundy text-white"
-                : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
+                ? "bg-primary-600 text-white"
+                : "bg-white border border-accent-100 text-gray-700 hover:bg-accent-50"
             }`}
           >
             {tab.label}
@@ -90,7 +90,7 @@ export default function AdminEvangelium({ token }: { token: string }) {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder={`Title for ${activeTab}`}
-            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-catholic-burgundy"
+            className="w-full border border-accent-100 rounded px-3 py-2 focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-100"
           />
         </div>
 
@@ -101,7 +101,7 @@ export default function AdminEvangelium({ token }: { token: string }) {
             onChange={(e) => setContent(e.target.value)}
             rows={20}
             placeholder="Enter the gospel reading here..."
-            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-catholic-burgundy"
+            className="w-full border border-accent-100 rounded px-3 py-2 text-sm focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-100"
           />
         </div>
 

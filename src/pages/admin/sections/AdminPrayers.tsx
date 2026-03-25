@@ -24,8 +24,8 @@ export default function AdminPrayers({ token }: { token: string }) {
 
   const openNew = () => { setForm(empty); setEditId(null); setIsOpen(true); };
   const openEdit = (p: NonNullable<typeof prayers>[0]) => {
-    setForm({ title: p.title, slug: p.slug, category: p.category, text: p.text,
-      latinText: p.latinText || "", origin: p.origin || "", notes: p.notes || "", sortOrder: p.sortOrder });
+    setForm({ title: p.title, slug: p.slug, category: p.category, text: stripHtmlTags(p.text),
+      latinText: stripHtmlTags(p.latinText || ""), origin: p.origin || "", notes: p.notes || "", sortOrder: p.sortOrder });
     setEditId(p._id); setIsOpen(true);
   };
 
@@ -60,7 +60,7 @@ export default function AdminPrayers({ token }: { token: string }) {
       </div>
       <div className="bg-white rounded-xl shadow overflow-hidden">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b">
+          <thead className="bg-accent-50 border-b">
             <tr>
               <th className="px-4 py-3 text-left">Title</th>
               <th className="px-4 py-3 text-left">Category</th>
@@ -70,7 +70,7 @@ export default function AdminPrayers({ token }: { token: string }) {
           </thead>
           <tbody className="divide-y">
             {(prayers || []).map((p) => (
-              <tr key={p._id} className="hover:bg-gray-50">
+              <tr key={p._id} className="hover:bg-accent-50">
                 <td className="px-4 py-3 font-medium">{p.title}</td>
                 <td className="px-4 py-3 text-gray-500">{p.category}</td>
                 <td className="px-4 py-3 text-gray-400 text-xs">{p.slug}</td>
@@ -98,13 +98,13 @@ export default function AdminPrayers({ token }: { token: string }) {
             <div key={k}>
               <label className="block text-xs font-medium mb-1">{label}</label>
               <input value={form[k]} onChange={set(k)} placeholder={placeholder}
-                className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:border-catholic-burgundy" />
+                className="w-full border border-accent-100 rounded px-3 py-2 text-sm focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-100" />
             </div>
           ))}
           <div>
             <label className="block text-xs font-medium mb-1">Prayer Text</label>
             <textarea value={form.text} onChange={set("text")} rows={8} placeholder="Write the prayer here..."
-              className="w-full border rounded px-3 py-2 text-sm focus:outline-none" />
+              className="w-full border border-accent-100 rounded px-3 py-2 text-sm focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-100" />
           </div>
           <div>
             <label className="block text-xs font-medium mb-1">Latin Text (optional)</label>
