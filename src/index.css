@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-catholic-cream font-sans text-stone-800;
+    margin: 0;
+  }
+
+  #root {
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+
+  .prose-catholic h1 { @apply text-3xl font-serif text-stone-900 mb-4 mt-6 font-normal; }
+  .prose-catholic h2 { @apply text-2xl font-serif text-stone-800 mb-3 mt-6 font-normal italic; }
+  .prose-catholic h3 { @apply text-xl font-serif text-stone-700 mb-2 mt-4 font-normal; }
+  .prose-catholic p { @apply mb-4 text-stone-700 leading-relaxed font-sans text-base; }
+  .prose-catholic ul { @apply list-disc pl-6 mb-4 text-stone-700 font-sans; }
+  .prose-catholic ol { @apply list-decimal pl-6 mb-4 text-stone-700 font-sans; }
+  .prose-catholic li { @apply mb-2 leading-relaxed; }
+  .prose-catholic strong { @apply font-semibold text-stone-900; }
+  .prose-catholic em { @apply italic text-stone-600; }
+  .prose-catholic blockquote { @apply border-l-2 border-catholic-gold pl-6 italic text-stone-600 my-6 text-lg font-serif; }
+  .prose-catholic a { @apply text-catholic-burgundy underline underline-offset-2 hover:text-catholic-gold-dark; }
+  .prose-catholic hr { @apply border-catholic-cream-dark my-8; }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-catholic-burgundy text-white px-6 py-2.5 font-sans text-xs tracking-widest uppercase hover:bg-catholic-burgundy-dark transition-colors;
+  }
+  .btn-secondary {
+    @apply bg-transparent border border-catholic-gold text-catholic-gold px-6 py-2.5 font-sans text-xs tracking-widest uppercase hover:bg-catholic-gold hover:text-white transition-colors;
+  }
+  .btn-outline {
+    @apply border border-stone-800 text-stone-800 px-6 py-2.5 font-sans text-xs tracking-widest uppercase hover:bg-stone-800 hover:text-white transition-colors;
+  }
+  .card {
+    @apply bg-white border border-stone-200 overflow-hidden;
+  }
+  .section-title {
+    @apply text-4xl font-serif text-stone-900 font-normal;
+  }
+  .section-subtitle {
+    @apply text-sm font-sans text-stone-500 mt-2 tracking-wide;
+  }
+}
