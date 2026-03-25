@@ -1,17 +1,5 @@
 import { mutation } from "./_generated/server";
 
-// ─── MARKDOWN → HTML CONVERTER ───────────────────────────────────────────────
-
-function convertInline(text: string): string {
-  // Bold-italic ***
-  text = text.replace(/\*\*\*(.*?)\*\*\*/g, "<strong><em>$1</em></strong>");
-  // Bold **
-  text = text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-  // Italic *
-  text = text.replace(/\*([^*\n]+)\*/g, "<em>$1</em>");
-  return text;
-}
-
 // ─── NEW ARTICLES ─────────────────────────────────────────────────────────────
 
 const NEW_ARTICLES = [
