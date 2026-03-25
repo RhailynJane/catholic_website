@@ -1,6 +1,18 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
+export const getVerseOfDay = query({
+  args: { dayOfYear: v.number() },
+  handler: async (ctx, { dayOfYear }) => {
+    const all = await ctx.db
+      .query("verses")
+      .filter((q) => q.eq(q.field("isActive"), true))
+      .collect();
+    if (all.length === 0) return null;
+    return all[dayOfYear % all.length];
+  },
+});
+
 export const listAll = query({
   args: {},
   handler: async (ctx) => {

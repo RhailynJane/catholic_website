@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import { getDayOfYear } from "../lib/utils";
+import { getDayOfYear, formatReference } from "../lib/utils";
 
 const features = [
   {
@@ -39,6 +39,7 @@ const features = [
 export default function Home() {
   const dayOfYear = getDayOfYear();
   const saint = useQuery(api.saints.getByDayOfYear, { dayOfYear });
+  const verseOfDay = useQuery(api.verses.getVerseOfDay, { dayOfYear });
 
   return (
     <div>
@@ -83,6 +84,24 @@ export default function Home() {
             <Link to={`/saints/${saint._id}`} className="btn-outline shrink-0">
               Read Bio
             </Link>
+          </div>
+        </section>
+      )}
+
+      {/* Bible Verse of the Day */}
+      {verseOfDay && (
+        <section className="border-b border-stone-200 bg-white">
+          <div className="max-w-5xl mx-auto px-6 py-8">
+            <p className="text-[9px] tracking-[0.5em] uppercase text-stone-400 font-sans mb-4 text-center">
+              Bible Verse of the Day
+            </p>
+            <blockquote className="font-serif text-2xl md:text-3xl text-stone-800 italic font-light leading-relaxed text-center">
+              "{verseOfDay.text}"
+            </blockquote>
+            <p className="mt-4 text-center font-sans text-sm text-stone-500">
+              — {formatReference(verseOfDay.book, verseOfDay.chapter, verseOfDay.verse, verseOfDay.verseEnd)}{" "}
+              <span className="text-stone-400 text-xs">({verseOfDay.translation})</span>
+            </p>
           </div>
         </section>
       )}

@@ -94,6 +94,7 @@ export default function PrayersPage() {
                       </p>
                     </Link>
                   ))}
+                  {prayerList.length % 2 !== 0 && <div className="bg-white hidden sm:block" />}
                 </div>
               </div>
             ))}

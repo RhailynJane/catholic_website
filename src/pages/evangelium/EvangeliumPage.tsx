@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import PageHeader from "../../components/ui/PageHeader";
@@ -7,110 +7,155 @@ import Spinner from "../../components/ui/Spinner";
 
 type Section = "creed" | "sacraments" | "morals" | "prayer";
 
-const tabs: { id: Section; label: string }[] = [
-  { id: "creed", label: "The Creed" },
-  { id: "sacraments", label: "Sacraments" },
-  { id: "morals", label: "Morals" },
-  { id: "prayer", label: "Prayer" },
+const tabs: { id: Section; label: string; description: string }[] = [
+  { id: "creed", label: "The Creed", description: "What Catholics Believe" },
+  { id: "sacraments", label: "Sacraments", description: "Signs of Grace" },
+  { id: "morals", label: "Morals", description: "Life in Christ" },
+  { id: "prayer", label: "Prayer", description: "Conversation with God" },
 ];
 
-const defaultContent: Record<Section, { title: string; content: string }> = {
-  creed: {
-    title: "The Nicene Creed",
-    content: `<p>I believe in one God, the Father almighty, maker of heaven and earth, of all things visible and invisible.</p>
-<p>I believe in one Lord Jesus Christ, the Only Begotten Son of God, born of the Father before all ages. God from God, Light from Light, true God from true God, begotten, not made, consubstantial with the Father; through him all things were made.</p>
-<p>For us men and for our salvation he came down from heaven, and by the Holy Spirit was incarnate of the Virgin Mary, and became man.</p>
-<p>For our sake he was crucified under Pontius Pilate, he suffered death and was buried, and rose again on the third day in accordance with the Scriptures.</p>
-<p>He ascended into heaven and is seated at the right hand of the Father. He will come again in glory to judge the living and the dead and his kingdom will have no end.</p>
-<p>I believe in the Holy Spirit, the Lord, the giver of life, who proceeds from the Father and the Son, who with the Father and the Son is adored and glorified, who has spoken through the prophets.</p>
-<p>I believe in one, holy, catholic and apostolic Church. I confess one Baptism for the forgiveness of sins and I look forward to the resurrection of the dead and the life of the world to come. Amen.</p>`,
-  },
-  sacraments: {
-    title: "The Seven Sacraments",
-    content: `<h2>The Seven Sacraments</h2>
-<p>The Catholic Church recognizes seven sacraments instituted by Christ — efficacious signs of grace (CCC 1131):</p>
-<ol>
-<li><strong>Baptism</strong> — the sacrament of regeneration through water and the Spirit (John 3:5)</li>
-<li><strong>Confirmation</strong> — strengthens baptismal grace and binds us more perfectly to the Church</li>
-<li><strong>Eucharist</strong> — the source and summit of the Christian life (Lumen Gentium 11)</li>
-<li><strong>Penance (Confession)</strong> — reconciliation with God and the Church after Baptism</li>
-<li><strong>Anointing of the Sick</strong> — for the ill and dying, uniting their suffering with Christ</li>
-<li><strong>Holy Orders</strong> — ordination of bishops, priests, and deacons</li>
-<li><strong>Matrimony</strong> — the covenant of marriage between a man and a woman</li>
-</ol>`,
-  },
-  morals: {
-    title: "Life in Christ",
-    content: `<h2>The Moral Life</h2>
-<p>The moral life of Catholics is rooted in the love of God and neighbor (Matt 22:37-39).</p>
-<h3>The Ten Commandments</h3>
-<ol>
-<li>I am the Lord your God; you shall not have false gods before me.</li>
-<li>You shall not take the name of the Lord your God in vain.</li>
-<li>Remember to keep holy the Lord's Day.</li>
-<li>Honor your father and your mother.</li>
-<li>You shall not kill.</li>
-<li>You shall not commit adultery.</li>
-<li>You shall not steal.</li>
-<li>You shall not bear false witness against your neighbor.</li>
-<li>You shall not covet your neighbor's wife.</li>
-<li>You shall not covet your neighbor's goods.</li>
-</ol>`,
-  },
-  prayer: {
-    title: "Christian Prayer",
-    content: `<h2>The Life of Prayer</h2>
-<p>Prayer is the raising of one's mind and heart to God (CCC 2559). The Church recognizes five forms of prayer:</p>
-<ol>
-<li><strong>Blessing and Adoration</strong> — glorifying God</li>
-<li><strong>Petition</strong> — asking God for what we need</li>
-<li><strong>Intercession</strong> — praying for others</li>
-<li><strong>Thanksgiving</strong> — expressing gratitude</li>
-<li><strong>Praise</strong> — glorifying God for His own sake</li>
-</ol>`,
-  },
-};
+function extractTopics(html: string): string[] {
+  const matches = html.match(/<h2[^>]*>(.*?)<\/h2>/gi) || [];
+  return matches.map((m) => m.replace(/<[^>]+>/g, "").trim());
+}
+
+function slugify(text: string): string {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+function injectAnchors(html: string): string {
+  return html.replace(/<h2([^>]*)>(.*?)<\/h2>/gi, (_, attrs, text) => {
+    const id = slugify(text.replace(/<[^>]+>/g, ""));
+    return `<h2${attrs} id="${id}">${text}</h2>`;
+  });
+}
 
 export default function EvangeliumPage() {
   const [activeTab, setActiveTab] = useState<Section>("creed");
+  const [activeTopic, setActiveTopic] = useState<string | null>(null);
   const data = useQuery(api.evangelium.getBySection, { section: activeTab });
 
-  const content = data || defaultContent[activeTab];
+  const topics = useMemo(() => {
+    if (!data?.content) return [];
+    return extractTopics(data.content);
+  }, [data?.content]);
+
+  const processedContent = useMemo(() => {
+    if (!data?.content) return "";
+    return injectAnchors(data.content);
+  }, [data?.content]);
+
+  function scrollToTopic(topic: string) {
+    setActiveTopic(topic);
+    const id = slugify(topic);
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 50);
+  }
+
+  function handleTabChange(tab: Section) {
+    setActiveTab(tab);
+    setActiveTopic(null);
+    window.scrollTo({ top: 0 });
+  }
 
   return (
     <div>
       <PageHeader
         title="Evangelium"
-        subtitle="Creed, Sacraments, Morals, and Prayer"
+        subtitle="Creed · Sacraments · Morals · Prayer"
       />
 
-      <div className="max-w-4xl mx-auto px-6 py-12">
-        {/* Tab Navigation */}
-        <div className="flex border-b border-stone-200 mb-10 gap-0">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`px-6 py-3 text-[10px] tracking-[0.3em] uppercase font-sans transition-colors border-b-2 -mb-px ${
-                activeTab === tab.id
-                  ? "border-stone-900 text-stone-900"
-                  : "border-transparent text-stone-400 hover:text-stone-700"
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+      {/* Section Tabs */}
+      <div className="border-b border-stone-200 bg-white sticky top-16 z-40">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex overflow-x-auto">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => handleTabChange(tab.id)}
+                className={`px-6 py-4 text-left shrink-0 border-b-2 transition-colors -mb-px ${
+                  activeTab === tab.id
+                    ? "border-stone-900 text-stone-900"
+                    : "border-transparent text-stone-400 hover:text-stone-700"
+                }`}
+              >
+                <span className={`block text-[10px] tracking-[0.3em] uppercase font-sans ${
+                  activeTab === tab.id ? "text-stone-900" : "text-stone-400"
+                }`}>
+                  {tab.label}
+                </span>
+                <span className="block text-[9px] font-sans text-stone-400 mt-0.5 hidden sm:block">
+                  {tab.description}
+                </span>
+              </button>
+            ))}
+          </div>
         </div>
+      </div>
 
-        {/* Content */}
+      <div className="max-w-6xl mx-auto px-6 py-12">
         {data === undefined ? (
           <Spinner />
         ) : (
-          <div>
-            <h2 className="font-serif text-4xl text-stone-900 font-light italic mb-2">{content.title}</h2>
-            <div className="h-px w-12 bg-catholic-gold mb-8" />
-            <div className="prose-catholic">
-              <RichTextRenderer content={content.content} />
+          <div className="flex gap-12">
+            {/* Sidebar: Table of Contents */}
+            {topics.length > 0 && (
+              <aside className="hidden lg:block w-56 shrink-0">
+                <div className="sticky top-36">
+                  <p className="text-[9px] tracking-[0.45em] uppercase text-stone-400 font-sans mb-4">
+                    In This Section
+                  </p>
+                  <nav className="space-y-0">
+                    {topics.map((topic) => (
+                      <button
+                        key={topic}
+                        onClick={() => scrollToTopic(topic)}
+                        className={`block w-full text-left py-2 text-xs font-sans leading-snug border-l-2 pl-3 transition-colors ${
+                          activeTopic === topic
+                            ? "border-catholic-gold text-stone-900"
+                            : "border-stone-100 text-stone-400 hover:text-stone-700 hover:border-stone-300"
+                        }`}
+                      >
+                        {topic}
+                      </button>
+                    ))}
+                  </nav>
+                </div>
+              </aside>
+            )}
+
+            {/* Main Content */}
+            <div className="flex-1 min-w-0">
+              <h2 className="font-serif text-4xl text-stone-900 font-light italic mb-2">
+                {data?.title}
+              </h2>
+              <div className="h-px w-12 bg-catholic-gold mb-10" />
+
+              {/* Mobile topic list */}
+              {topics.length > 0 && (
+                <div className="lg:hidden mb-8 border border-stone-200 bg-white p-5">
+                  <p className="text-[9px] tracking-[0.45em] uppercase text-stone-400 font-sans mb-3">
+                    Topics
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {topics.map((topic) => (
+                      <button
+                        key={topic}
+                        onClick={() => scrollToTopic(topic)}
+                        className="text-[10px] border border-stone-200 px-2 py-1 text-stone-500 hover:text-stone-900 hover:border-stone-400 transition-colors font-sans"
+                      >
+                        {topic}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="prose-catholic">
+                <RichTextRenderer content={processedContent} />
+              </div>
             </div>
           </div>
         )}
