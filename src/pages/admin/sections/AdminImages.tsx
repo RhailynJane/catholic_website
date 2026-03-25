@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useMutation, useAction } from "convex/react";
+import { useAction } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Loader } from "lucide-react";
 
@@ -16,7 +16,7 @@ export default function AdminImages() {
   const [individualLoading, setIndividualLoading] = useState(false);
 
   const fetchSaintImagesAction = useAction(api.fetchSaintImages.fetchSaintImages);
-  const updateSaintImageMutation = useMutation(api.fetchSaintImages.updateSaintImage);
+  const updateSaintImageAction = useAction(api.fetchSaintImages.updateSaintImage);
 
   const handleFetchAll = async () => {
     setLoading(true);
@@ -41,7 +41,7 @@ export default function AdminImages() {
     setIndividualLoading(true);
     setError(null);
     try {
-      const result = await updateSaintImageMutation({
+      const result = await updateSaintImageAction({
         saintName: individualSaint.trim(),
       });
       if (result.success) {

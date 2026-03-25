@@ -12,55 +12,6 @@ function convertInline(text: string): string {
   return text;
 }
 
-function mdToHtml(content: string): string {
-  // If already HTML, just fix any remaining ** patterns
-  if (content.includes("<p>") || content.includes("<h2") || content.includes("<ul>") || content.includes("<ol>")) {
-    return content
-      .replace(/\*\*\*(.*?)\*\*\*/g, "<strong><em>$1</em></strong>")
-      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-      .replace(/\*([^*\n]+)\*/g, "<em>$1</em>");
-  }
-
-  const paras = content.split(/\n\n+/);
-  const out: string[] = [];
-
-  for (const raw of paras) {
-    const p = raw.trim();
-    if (!p) continue;
-
-    // Pure heading: **text** alone
-    if (/^\*\*[^*]+\*\*$/.test(p)) {
-      out.push(`<h3>${p.replace(/^\*\*(.*)\*\*$/, "$1")}</h3>`);
-      continue;
-    }
-
-    const lines = p.split("\n");
-    const first = lines[0].trim();
-
-    // First line is a heading, rest is body
-    if (/^\*\*[^*]+\*\*$/.test(first) && lines.length > 1) {
-      out.push(`<h3>${first.replace(/^\*\*(.*)\*\*$/, "$1")}</h3>`);
-      const body = lines.slice(1).join(" ").trim();
-      if (body) out.push(`<p>${convertInline(body)}</p>`);
-      continue;
-    }
-
-    // Bullet list
-    if (lines.every((l) => l.trim() === "" || /^[-*]\s/.test(l.trim()))) {
-      const items = lines
-        .filter((l) => /^[-*]\s/.test(l.trim()))
-        .map((l) => `<li>${convertInline(l.replace(/^[-*]\s+/, ""))}</li>`);
-      out.push(`<ul>${items.join("")}</ul>`);
-      continue;
-    }
-
-    // Regular paragraph
-    out.push(`<p>${convertInline(p.replace(/\n/g, " "))}</p>`);
-  }
-
-  return out.join("\n");
-}
-
 // ─── NEW ARTICLES ─────────────────────────────────────────────────────────────
 
 const NEW_ARTICLES = [

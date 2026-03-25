@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import { getAdminToken, setAdminToken, clearAdminToken } from "../lib/adminAuth";
+import { setAdminToken, clearAdminToken } from "../lib/adminAuth";
 
 export function useAdminAuth() {
   // Start with no token - require password on each page load
